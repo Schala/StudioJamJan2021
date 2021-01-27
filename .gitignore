@@ -58,5 +58,7 @@ sysinfo.txt
 # Crashlytics generated file
 crashlytics-build.properties
 
+/Assets/Audio/
+/Assets/Scenes/SampleScene/
 /Assets/ThirdParty/
 *.fbx

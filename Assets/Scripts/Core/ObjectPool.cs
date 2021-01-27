@@ -18,54 +18,54 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace StudioJamNov2020
+namespace StudioJamJan2021
 {
     [Serializable]
     public class ObjectPoolItem
     {
-        public int m_Amount;
-        public GameObject m_Object = null;
-        public bool m_Expandable;
+        public int amount;
+        public GameObject item = null;
+        public bool expandable;
     }
 
     public class ObjectPool : MonoBehaviour
     {
-        [SerializeField] List<ObjectPoolItem> m_Objects = null;
-        List<GameObject> m_Pool = null;
+        [SerializeField] List<ObjectPoolItem> items = null;
+        List<GameObject> pool = null;
 
-        private void Awake() => m_Pool = new List<GameObject>();
+        private void Awake() => pool = new List<GameObject>();
 
         private void Start()
         {
-            for (int i = 0; i < m_Objects.Count; i++)
+            for (int i = 0; i < items.Count; i++)
             {
-                for (int j = 0; j < m_Objects[i].m_Amount; j++)
+                for (int j = 0; j < items[i].amount; j++)
                 {
-                    var obj = Instantiate(m_Objects[i].m_Object);
+                    var obj = Instantiate(items[i].item);
                     obj.name = $"{obj.name} {j + 1}";
                     obj.SetActive(false);
-                    m_Pool.Add(obj);
+                    pool.Add(obj);
                 }
             }
         }
 
         public GameObject Get(string tag)
         {
-            for (int i = 0; i < m_Pool.Count; i++)
+            for (int i = 0; i < pool.Count; i++)
             {
-                if (!m_Pool[i].activeInHierarchy && m_Pool[i].CompareTag(tag))
-                    return m_Pool[i];
+                if (!pool[i].activeInHierarchy && pool[i].CompareTag(tag))
+                    return pool[i];
             }
 
-            for (int i = 0; i < m_Objects.Count; i++)
+            for (int i = 0; i < items.Count; i++)
             {
-                if (m_Objects[i].m_Object.CompareTag(tag))
+                if (items[i].item.CompareTag(tag))
                 {
-                    if (m_Objects[i].m_Expandable)
+                    if (items[i].expandable)
                     {
-                        var obj = Instantiate(m_Objects[i].m_Object);
+                        var obj = Instantiate(items[i].item);
                         obj.SetActive(false);
-                        m_Pool.Add(obj);
+                        pool.Add(obj);
                         return obj;
                     }
                 }
