@@ -4,7 +4,6 @@ public class Gun : MonoBehaviour
 {
 	[SerializeField] LayerMask targetMask;
 	[SerializeField] Transform spawnPoint = null;
-	[SerializeField] Transform endPoint = null;
 	[SerializeField] LineRenderer rayVisual = null;
 	Camera pov = null;
 
@@ -17,20 +16,18 @@ public class Gun : MonoBehaviour
 
 	private void OnMouseDown() => Shoot();
 
-	private void OnMouseUp() => rayVisual.enabled = false;
+	private void OnMouseUp()
+	{
+		rayVisual.enabled = false;
+	}
 
 	void Shoot()
 	{
-		var targetFound = Physics.Raycast(spawnPoint.position, pov.transform.TransformDirection(Vector3.forward), out RaycastHit hit);
+		var targetFound = Physics.Raycast(spawnPoint.position, pov.transform.forward, out RaycastHit hit, Mathf.Infinity, targetMask);
 		rayVisual.enabled = true;
 		rayVisual.SetPosition(0, spawnPoint.position);
-		if (!targetFound)
-		{
-			rayVisual.SetPosition(1, endPoint.position);
-			return;
-		}
-
-		rayVisual.SetPosition(1, hit.point);
+		rayVisual.SetPosition(1, targetFound ? hit.point : pov.transform.forward * 2f);
+		if (!targetFound) return;
 
 		var gw = hit.collider.GetComponent<GravityWarp>();
 		if (gw == null) return;

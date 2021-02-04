@@ -23,7 +23,6 @@ public class GravityWarp : MonoBehaviour
 
 	private void Update()
 	{
-		// Because I'm too lazy to spawn another
 		if (transform.position.y < -10f)
 			transform.position = spawnPosition;
 
